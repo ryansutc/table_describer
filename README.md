@@ -21,3 +21,15 @@ Or install directly from github as a script:
 pip install git+https://github.com/ryansutc/table_describer.git
 ```
 
+## Or if you want to pull down to work on and test using a safe python virtual environment:
+
+```
+# to install all the python package dependencies:
+pipenv install
+
+# to activate the projects virtual env:
+pipenv shell
+
+# to run a command inside the virtual env:
+pipenv run
+```
