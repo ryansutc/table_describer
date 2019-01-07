@@ -44,7 +44,7 @@ def describe_csv(input_table, date_fields=[]):
             df_input[f] = pd.to_datetime(df_input[f])
             df.loc[df.index == f, "NumpyType"] = np.dtype('M')
         except ValueError as e:
-            print "%s had unparseable values for datetime." % f
+            print("%s had unparseable values for datetime." % f)
 
     # get length of string fields and update data type to include this:
     df['DataType'] = df["NumpyType"]
@@ -53,10 +53,10 @@ def describe_csv(input_table, date_fields=[]):
         if df.loc[i].DataType.name == 'object':
             df.DataType[i] = "string(%i)" % df_input[i].str.len().max()
         df.IsUnique[i] = df_input[i].is_unique
-    print "SCHEMA INFO"
-    print df
-    print "DATA CHARACTERISTICS"
-    print df_input.describe().round()
+    print("SCHEMA INFO")
+    print(df)
+    print("DATA CHARACTERISTICS")
+    print(df_input.describe().round())
 
     return {
         "schema": df,
