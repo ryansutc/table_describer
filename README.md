@@ -1,3 +1,18 @@
+<h1 align="center">
+  <h4 align="center">Data Diff: Compare files with Python</h4>
+</h1>
+
+<p align="center">
+  <a href="https://travis-ci.org/ryansutc/table_describer">
+    <img src="https://travis-ci.org/ryansutc/data_diff.svg?branch=master"
+         alt="Build">
+  </a>
+  <a href="https://raw.githubusercontent.com/ryansutc/table_describer/master/LICENSE">
+    <img src="https://img.shields.io/npm/l/express.svg?maxAge=2592000&style=flat-square"
+         alt="License">
+  </a>
+</p>
+
 # table_describer
 Quickly get characteristics of a delimited table and its data
 

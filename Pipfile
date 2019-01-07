@@ -4,11 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-
+pytest = "*"
 
 [packages]
-requests = "*"
-pandas = "*"
+pandas = "==0.23.4"
+pip = "==18.0"
 
 [requires]
 python_version = "2.7"
