@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://travis-ci.org/ryansutc/table_describer">
-    <img src="https://travis-ci.org/ryansutc/data_diff.svg?branch=master"
+    <img src="https://travis-ci.org/ryansutc/table_describer.svg?branch=master"
          alt="Build">
   </a>
   <a href="https://raw.githubusercontent.com/ryansutc/table_describer/master/LICENSE">

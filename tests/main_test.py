@@ -4,7 +4,7 @@ import os
 
 def test_sample():
     # Check that tool runs on sample data
-    sampletable = r".\data\sampleTable.csv"
+    sampletable = "/data/sampleTable.csv"
     td.describe_csv(__get_file_path(sampletable), ["creationdate"])
 
 
