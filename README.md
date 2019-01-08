@@ -1,5 +1,5 @@
 <h1 align="center">
-  <h4 align="center">Data Diff: Compare files with Python</h4>
+  <h4 align="center">Table Describer: Get info on a csv file</h4>
 </h1>
 
 <p align="center">
@@ -21,7 +21,7 @@ It's an experiment and definitely not production-ready; more of a test with buil
 
 ## Prerequisites
 
-Requires Python 2x and [pandas python library](https://pandas.pydata.org/)
+Requires Python 2 or 3x and [pandas python library](https://pandas.pydata.org/)
 
 ## Installing from pypi test library
 
