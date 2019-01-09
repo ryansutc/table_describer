@@ -6,5 +6,16 @@ install:
 # command to run tests (switch to pipenv instead of requirements.txt)
     - 'pip install pipenv'
     - 'pipenv install --dev'
-#    - 'pipenv shell'
+    - 'pipenv pyinstaller --onedir'
+    - 'pipenv table_describer/zipdist.py'
+#   - 'pipenv shell'
 script: pytest
+
+deploy:
+  provider: releases
+  api_key: github_secret_personal_access_token
+  file: "table_describer/tbl_desc.zip"
+  skip_cleanup: true
+    on:
+      tags: true # only deploy on tagged build
+      repo: ryansutc/table_describer
