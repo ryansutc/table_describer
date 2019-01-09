@@ -5,6 +5,7 @@ name = "pypi"
 
 [dev-packages]
 pytest = "*"
+pyinstaller = "*"
 
 [packages]
 pandas = "==0.23.4"

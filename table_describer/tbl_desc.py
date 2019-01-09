@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# created by rsutcliffe 20190106
 name = "table_describer"
 
 from warnings import filterwarnings, simplefilter
