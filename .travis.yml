@@ -6,7 +6,7 @@ install:
 # command to run tests (switch to pipenv instead of requirements.txt)
     - 'pip install pipenv'
     - 'pipenv install --dev'
-    - 'pipenv pyinstaller --onedir'
+    - 'pyinstaller --onedir'
     - 'pipenv table_describer/zipdist.py'
 #   - 'pipenv shell'
 script: pytest
