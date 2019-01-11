@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
   long_description = fh.read()
 
 setuptools.setup(name='table describer',
-            version='0.1.5',
+            version='0.1.6',
             description='Quickly get characteristics of a delimited table',
             long_description=long_description,
             long_description_content_type="text/markdown",
