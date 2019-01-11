@@ -1,3 +1,4 @@
+
 language: python
 python:
     - "2.7"
@@ -6,8 +7,9 @@ install:
 # command to run tests (switch to pipenv instead of requirements.txt)
     - 'pip install pipenv'
     - 'pipenv install --dev'
-    - 'pyinstaller --onedir'
-    - 'pipenv table_describer/zipdist.py'
+    - 'pip install --upgrade setuptools'
+    - 'pyinstaller table_describer/tbl_desc.py --onedir'
+    - 'python zipdist.py'
 #   - 'pipenv shell'
 script: pytest
 
