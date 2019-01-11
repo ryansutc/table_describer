@@ -17,6 +17,6 @@ def __get_file_path(relpath):
 
 if __name__ == '__main__':
     shutil.make_archive(__get_file_path("tbl_desc"), "zip",
-                            __get_file_path("dist/"))
+                            __get_file_path("./dist/"))
     print("zipping file...")
     print("done")
