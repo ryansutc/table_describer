@@ -15,7 +15,7 @@ script: pytest
 
 deploy:
   provider: releases
-  api_key: github_secret_personal_access_token
+  api_key: $github_secret_personal_access_token
   file: 'table_describer/tbl_desc.zip'
   skip_cleanup: true
   on:
