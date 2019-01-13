@@ -18,7 +18,8 @@ into a structured database or the like
 '''
 
 
-def describe_csv(input_table, date_fields=[]):
+def describe_csv(input_table, date_fields=[], schema=True,
+                 characteristics=True, uniqueness=True):
     '''
     print some details to screen about
     a provided csv file
@@ -26,42 +27,73 @@ def describe_csv(input_table, date_fields=[]):
     @params:
       input_table: string filepath to a csv file
       date_fields: list of fields that should be of type 'timestamp'
+      schema = report on schema (default=True)
+      characteristics = report on data characteristics (default=True)
+      uniqueness = report on data uniqueness (default=True)
 
-    :return dict with schema, and chars
+    :return dict with schema, characteristics, and uniqueness keys (each a dataframe)
     '''
 
     # Load input data into panda data frame
-    df_input = pd.read_csv(input_table)
+    if len(date_fields) > 0:
+        # If user specified date fields, convert them:
+        df_input = pd.read_csv(input_table, parse_dates=date_fields)
+    else:
+        # otherwise take best shot at identifying date fields
+        # this doesn't seem to find many datetime fields I've seen...
+        df_input = pd.read_csv(input_table, parse_dates=True)
+    results = {}
+    if schema:
+        # create 2nd data frame from data structure for schema
 
-    # create 2nd data frame from data structure
-    df = pd.DataFrame.from_dict(data=dict(df_input.dtypes),
-                                orient="index",
-                                columns=["NumpyType"])
-    df.index.name = "FieldName"
+        df = pd.DataFrame.from_dict(data=dict(df_input.dtypes),
+                                    orient="index",
+                                    columns=["NumpyType"])
+        df.index.name = "FieldName"
 
-    # Do we have datetime fields? If so, convert them here:
-    for f in date_fields:
-        try:
-            df_input[f] = pd.to_datetime(df_input[f])
-            df.loc[df.index == f, "NumpyType"] = np.dtype('M')
-        except ValueError as e:
-            print("%s had unparseable values for datetime." % f)
+        # get length of string fields and update data type to include this:
+        df['DataType'] = df["NumpyType"]
+        df['IsUnique'] = ""
+        for i in df.index:
+            if df.loc[i].DataType.name == 'object':
+                df.DataType[i] = "string(%i)" % df_input[i].str.len().max()
+            df.IsUnique[i] = df_input[i].is_unique
+        results["schema"] = df
+    if characteristics:
+        # get characteristics of table via table describe:
+        results["characteristics"] = df_input.describe().round()
 
-    # get length of string fields and update data type to include this:
-    df['DataType'] = df["NumpyType"]
-    df['IsUnique'] = ""
-    for i in df.index:
-        if df.loc[i].DataType.name == 'object':
-            df.DataType[i] = "string(%i)" % df_input[i].str.len().max()
-        df.IsUnique[i] = df_input[i].is_unique
-    print("SCHEMA INFO")
-    print(df)
-    print("DATA CHARACTERISTICS")
-    print(df_input.describe().round())
+    if uniqueness:
+        # look at each field and report on the uniqueness of their values:
+        results["uniqueness"] = getuniqueness(df_input)
 
-    return {
-        "schema": df,
-        "chars": df_input.describe().round()}
+    return results
+
+
+def getuniqueness(df_input):
+    '''
+
+    :param df_input: input_dataframe
+    :return: dataframe with min,max,avg of unique values in each field
+    '''
+
+    df = pd.DataFrame(columns=['field', 'totalvals', 'totaluniquevals', 'min_occ', 'max_occ', 'avg_occ'])
+    for i in df_input.columns.values:
+
+        x = {}
+        x["field"] = i
+        x["totalvals"] = df_input[i].count()
+        x["totaluniquevals"] = len(df_input[i].unique())
+        x["min_occ"] = (min(df_input[i].value_counts()))
+        x["max_occ"] = max(df_input[i].value_counts())
+        x["avg_occ"] = round(__mean(df_input[i].value_counts()), 0)
+        df = df.append(x, ignore_index=True)
+
+    return df
+
+
+def __mean(numbers):
+    return float(sum(numbers)) / max(len(numbers), 1)
 
 def main():
     # Command Line utility:
@@ -75,9 +107,18 @@ def main():
     args = parser.parse_args()
 
     input_tbl = args.inputtable.replace("'","").replace('"','')
-    date_fields = ['{0}'.format(s).replace("'","") for s in args.datefields]  # list of fields
+    if args.datefields:
+        date_fields = ['{0}'.format(s).replace("'","") for s in args.datefields]  # list of fields
+    else:
+        date_fields = []
 
-    describe_csv(input_tbl, date_fields)
+    result = describe_csv(input_tbl, date_fields)
+    print("SCHEMA INFO")
+    print(result["schema"])
+    print("DATA CHARACTERISTICS OF NUMERIC FIELDS")
+    print(result["characteristics"])
+    print("UNIQUENESS OF FIELDS")
+    print(result["uniqueness"])
 
 if __name__ == '__main__':
     main()
